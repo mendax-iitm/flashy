@@ -2,3 +2,4 @@ local_setup.sh
 local_run.sh
 db_directory/testdb.sqlite3
 application/config.py
+.env
