@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Thank You</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/custom_validations.js') }}"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <h1 class="display-4">Thank You</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    Thank you
+                </div>
+                <div class ="col-md-4">
+                    {% include 'sidebar.html' %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
