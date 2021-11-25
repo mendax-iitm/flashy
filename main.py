@@ -1,38 +1,38 @@
 from application.api import UserAPI
-
+from flask_login import LoginManager
 import os
 from flask import Flask
 from flask_restful import Resource, Api
 from application import config
 from application.config import LocalDevelopmentConfig
 from application.database import db
+from flask_bcrypt import Bcrypt
 from flask_security import (
     Security,
     SQLAlchemySessionUserDatastore,
     SQLAlchemyUserDatastore,
 )
-from application.models import User, Role
-
-app = None
-api = None
+from application.models import User
 
 
-def create_app():
-    app = Flask(__name__, template_folder="templates")
-    if os.getenv("ENV", "development") == "production":
-        raise Exception("Currently no production config is setup.")
-    else:
-        print("Staring Local Development")
-        app.config.from_object(LocalDevelopmentConfig)
-    db.init_app(app)
-    api = Api(app)
-    app.app_context().push()
-    user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
-    security = Security(app, user_datastore)
-    return app, api
 
+app = Flask(__name__, template_folder="templates")
+if os.getenv("ENV", "development") == "production":
+    raise Exception("Currently no production config is setup.")
+else:
+    print("Staring Local Development")
+    app.config.from_object(LocalDevelopmentConfig)
+db.init_app(app)
+api = Api(app)
+security=Security(app)
+login_manager = LoginManager(app)
+bcrypt=  Bcrypt(app)
+app.app_context().push()
+login_manager.login_view='login'
 
-app, api = create_app()
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 # Import all the controllers so they are loaded
 from application.controllers import *

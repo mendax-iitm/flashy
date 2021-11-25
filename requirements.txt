@@ -3,4 +3,4 @@ Flask-SQLAlchemy==2.5.1
 flask-restful
 Flask-Security
 email_validator
-bcrypt
+flask-bcrypt
