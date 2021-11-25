@@ -67,12 +67,66 @@ def logout():
 @app.route('/')
 @login_required
 def index():
-    if current_user.is_authenticated:
-        print(current_user.id)
+    
     u = User.query.get(current_user.id)
+    
     decks = Deck.query.filter_by(user_id=u.id).all()
-    decknumber = len(decks)
+    
     return render_template('index.html', decks=decks)
+
+@app.route('/deck/add', methods=['GET', 'POST'] )
+def deck():
+    u = User.query.get(current_user.id)
+    if request.method=='POST':
+        title = request.form['title']
+        deck =Deck.query.filter((Deck.title==title) & (Deck.user_id==u.id)).first()
+        if not deck:
+            deck = Deck(title=title, user_id=u.id)
+            db.session.add(deck)
+            db.session.commit()
+            return redirect('/')
+        
+            
+    return render_template('deckadding.html')
+
+@app.route('/deck/<int:deck_id>/delete')
+def deck_delete(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    print(deck)
+    if  deck:
+        db.session.delete(deck)
+        db.session.commit()
+        return redirect('/')
+    return redirect('/')
+
+@app.route('/deck/<int:deck_id>/delete')
+def deck_delete(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    if  deck:
+        db.session.delete(deck)
+        db.session.commit()
+        return redirect('/')
+    return redirect('/')
+
+@app.route('/deck/<int:deck_id>/card/add',methods=['GET','POST'])
+def card_add(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    if  deck:
+        db.session.delete(deck)
+        db.session.commit()
+        return redirect('/')
+    return redirect('/')
+
+
+
+
+
+
+
+
+
+
+
 
 
 # @app.route("/articles_by/<user_name>", methods=["GET", "POST"])
