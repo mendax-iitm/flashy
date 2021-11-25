@@ -14,19 +14,19 @@
                 <div class="col">Last Reviewed</div>
                 <div class="col">Action</div>
             </div>
-        {% for deck in decks %}
+        {% for i in range(decks|length) %}
         <div class="row mx-auto">
             <div class="col">
-                <a href="#">{{deck.title}}</a>
+                <a href="#">{{decks[i]['title']}}</a>
                 
             </div>
-            <div class="col">0</div>
-            <div class="col">{{deck.deck_score}}</div>
-            <div class="col">{{deck.review_time}}</div>
+            <div class="col">{{cardnum[i]}}</div>
+            <div class="col">{{decks[i]['deck_score']}}</div>
+            <div class="col">{{decks[i]['review_time']}}</div>
             <div class="col">
-                <a href="/deck/{{deck.id}}/card/add">Add card </a>|
-                <a href="/deck/{{deck.id}}/test">Test </a>|
-                <a href="/deck/{{deck.id}}/delete">Delete</a>
+                <a href="/deck/{{decks[i]['id']}}/card/add">Add card </a>|
+                <a href="/deck/{{decks[i]['id']}}/test">Test </a>|
+                <a href="/deck/{{decks[i]['id']}}/delete">Delete</a>
             </div>
         </div>
             

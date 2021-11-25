@@ -71,8 +71,12 @@ def index():
     u = User.query.get(current_user.id)
     
     decks = Deck.query.filter_by(user_id=u.id).all()
+    cardnum=[]
+    for deck in decks:
+        cards = Card.query.filter_by(deck_id=deck.id).all()
+        cardnum.append(len(cards))
     
-    return render_template('index.html', decks=decks)
+    return render_template('index.html', decks=decks, cardnum=cardnum)
 
 @app.route('/deck/add', methods=['GET', 'POST'] )
 def deck():
@@ -99,23 +103,19 @@ def deck_delete(deck_id):
         return redirect('/')
     return redirect('/')
 
-@app.route('/deck/<int:deck_id>/delete')
-def deck_delete(deck_id):
-    deck = Deck.query.filter_by(id=deck_id).first()
-    if  deck:
-        db.session.delete(deck)
-        db.session.commit()
-        return redirect('/')
-    return redirect('/')
 
 @app.route('/deck/<int:deck_id>/card/add',methods=['GET','POST'])
 def card_add(deck_id):
     deck = Deck.query.filter_by(id=deck_id).first()
-    if  deck:
-        db.session.delete(deck)
-        db.session.commit()
-        return redirect('/')
-    return redirect('/')
+    if request.method =='POST':
+        front = request.form['front']
+        back = request.form['back']
+        if  deck:
+            card = Card(front=front, back=back, deck_id=deck_id)
+            db.session.add(card)
+            db.session.commit()
+            return redirect('/')
+    return render_template('addcard.html',deck_id=deck_id)
 
 
 
