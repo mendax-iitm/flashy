@@ -7,7 +7,13 @@ from flask_login import login_user, login_required, logout_user, current_user
 from application.forms import RegistrationForm, LoginForm
 from main import bcrypt
 from application.database import db
+from main import login_manager
 
+
+@login_manager.user_loader
+def load_user(id):
+    print(User.query.get(int(id)))
+    return User.query.get(int(id))
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -16,21 +22,22 @@ def register():
     if current_user.is_authenticated:
         return redirect("/")
     form = RegistrationForm()
-    print(1)
+    
     if request.method=='POST':
-        print('here')
-        user = User(username=form.username.data, password=bcrypt.generate_password_hash(form.password.data))
+        
+        user = User(username=form.username.data)
+        user.password=bcrypt.generate_password_hash(form.password.data)
 
-        print(user.username, user.password)
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect("/login")
-    print(2)
+    
     return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    
     if current_user.is_authenticated:
         return redirect("/")
     form = LoginForm()
@@ -40,7 +47,10 @@ def login():
         if user is None or not bcrypt.check_password_hash(user.password,form.password.data):
             flash('Invalid username or password')
             return redirect("/login")
+        user.active=1
+        db.session.commit()
         login_user(user, remember=form.remember_me.data)
+        
         return redirect("/")
     return render_template('login.html', form=form)
 
@@ -48,14 +58,21 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    u = User.query.get(current_user.id)
+    u.active=0
+    db.session.commit()
     logout_user()
-    return redirect(url_for('feedback')) 
+    return redirect(url_for('login')) 
 
 @app.route('/')
-
+@login_required
 def index():
-
-    return render_template('thank-you.html')
+    if current_user.is_authenticated:
+        print(current_user.id)
+    u = User.query.get(current_user.id)
+    decks = Deck.query.filter_by(user_id=u.id).all()
+    decknumber = len(decks)
+    return render_template('index.html', decks=decks)
 
 
 # @app.route("/articles_by/<user_name>", methods=["GET", "POST"])
@@ -91,5 +108,4 @@ def index():
 # def like(article_id):
 #     print("ARticle with article_id={}, was liked".format(article_id))
 
-#     # Create a table fpr artic;e likes and store it.
-#     return "OK", 200
+

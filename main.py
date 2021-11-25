@@ -30,9 +30,7 @@ bcrypt=  Bcrypt(app)
 app.app_context().push()
 login_manager.login_view='login'
 
-@login_manager.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+
 
 # Import all the controllers so they are loaded
 from application.controllers import *

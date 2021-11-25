@@ -4,9 +4,16 @@
     <div class="container">
         <div class="text-center">
         <h1>Deck Management</h1>
+        <h3>Total Decks: {{decks|length}}</h3>
         </div>
-    
-
+        <div class="collection">
+        {% for deck in decks %}
+        {{deck.title}}
+        {% endfor %}
+        </div>
+        <div class="newcard">
+            <a href="/add/deck">Add new deck</a>
+        </div>
     </div>
 {% endblock %}    
 

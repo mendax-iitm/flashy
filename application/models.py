@@ -13,6 +13,23 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     deck = db.relationship(
         "Deck", backref='user', lazy=True)
+    
+    def __init__(self, username, active=0):
+        self.username=username
+        self.active=active 
+
+    def is_active(self):
+        return True
+
+    def is_authenticated(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+
+    def get_id(self):
+        return self.id
 
 
 class Deck(db.Model):
