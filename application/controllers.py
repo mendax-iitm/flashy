@@ -85,7 +85,11 @@ def index():
         # print(timedelta(hours=1)+deck.review_time)
         # print(time_now)
         # print((timedelta(hours=1)+deck.review_time)<time_now)
-        if deck.review_time==None or (timedelta(hours=1)+deck.review_time<time_now) :
+        if len(cards)==0:
+            score=0
+            reviews.append(False)
+
+        elif deck.review_time==None or (timedelta(hours=1)+deck.review_time<time_now) :
             deck.deck_score=0
             db.session.add(deck)
             score=deck.deck_score
