@@ -17,12 +17,22 @@
         {% for i in range(decks|length) %}
         <div class="row mx-auto">
             <div class="col">
-                <a href="#">{{decks[i]['title']}}</a>
+                <a href="/deck/{{decks[i]['id']}}/update">{{decks[i]['title']}}</a>
                 
             </div>
             <div class="col">{{cardnum[i]}}</div>
-            <div class="col">{{decks[i]['deck_score']}}</div>
-            <div class="col">{{decks[i]['review_time']}}</div>
+            <div class="col">
+                 {% if reviews[i] == True %}
+                 <a class="btn btn-warning" href="/deck/{{decks[i]['id']}}/test">Review </a>
+                 {% else %}
+                {{scores[i]}}%
+                {% endif %}
+                </div>
+            <div class="col">
+                
+                {{review_time_ist[i]}}
+
+            </div>
             <div class="col">
                 <a href="/deck/{{decks[i]['id']}}/card/add">Add card </a>|
                 <a href="/deck/{{decks[i]['id']}}/test">Test </a>|

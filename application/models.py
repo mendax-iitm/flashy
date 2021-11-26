@@ -49,7 +49,8 @@ class Card(db.Model):
     back = db.Column(db.String)
     deck_id = db.Column(db.Integer, db.ForeignKey(
         'deck.id'), primary_key=True, nullable=False)
-    difficulty = db.Column(db.Integer)
+    review = db.Column(db.Integer)
+    
 
 
 # class ArticleAuthors(db.Model):

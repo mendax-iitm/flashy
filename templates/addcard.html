@@ -1,29 +1,32 @@
 {% extends "base.html" %}
 
     {% block content %}
-    <div class="container-fluid">
-        <div class="col-lg-6">
+    
+        
+    
+    <div class="container-fluid d-flex justify-content-center align-items-center" >
+        <div class="col-lg-5">
             <form action="/deck/{{deck_id}}/card/add" method="post" >
                 <div class="form-group">
                     <div class="text-center">
                         <label for="front">Front</label>
                     </div>
                     
-                    <input type="text" name="front" id="front" class="form-control" required>
+                    <textarea name="front" id="front" rows="10" class="form-control" required></textarea>
                 </div>
                 <div class="text-center">
                     <label for="back">Back</label>
                 </div>
                 
-                <input type="text" name="back" id="back" class="form-control" required>
+                <textarea name="back" id="back" rows="10" class="form-control" required></textarea>
             </div>
                 
-                <div class="form-group my-5">
+                <div class="form-group mx-5">
                     <button ontype="submit" class="btn btn-primary mb-2">Add Card</button>
                 </div>
             </form>
         </div>
         
     </div>
-    
+
 {% endblock %}  

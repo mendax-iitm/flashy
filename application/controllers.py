@@ -8,6 +8,11 @@ from application.forms import RegistrationForm, LoginForm
 from main import bcrypt
 from application.database import db
 from main import login_manager
+import random
+from application.helperfunction import  utc_to_local
+from datetime import datetime, timedelta
+import pytz
+IST = pytz.timezone('Asia/Kolkata')
 
 
 @login_manager.user_loader
@@ -69,16 +74,38 @@ def logout():
 def index():
     
     u = User.query.get(current_user.id)
-    
+    time_now = datetime.utcnow()
     decks = Deck.query.filter_by(user_id=u.id).all()
     cardnum=[]
+    scores=[]
+    reviews=[]
+    review_time_ist=[]
     for deck in decks:
         cards = Card.query.filter_by(deck_id=deck.id).all()
+        # print(timedelta(hours=1)+deck.review_time)
+        # print(time_now)
+        # print((timedelta(hours=1)+deck.review_time)<time_now)
+        if deck.review_time==None or (timedelta(hours=1)+deck.review_time<time_now) :
+            deck.deck_score=0
+            score=deck.deck_score
+            for card in cards:
+                card.review=0
+            reviews.append(True)
+            
+        else:
+            score = int(round((deck.deck_score/len(cards))*100))
+            reviews.append(False)
+        if deck.review_time is None:
+            review_time_ist.append(None)
+        else:
+            review_time_ist.append(utc_to_local(deck.review_time))
+        scores.append(score)
         cardnum.append(len(cards))
     
-    return render_template('index.html', decks=decks, cardnum=cardnum)
+    return render_template('index.html', decks=decks, cardnum=cardnum, scores=scores, reviews=reviews, review_time_ist=review_time_ist)
 
 @app.route('/deck/add', methods=['GET', 'POST'] )
+@login_required
 def deck():
     u = User.query.get(current_user.id)
     if request.method=='POST':
@@ -94,6 +121,7 @@ def deck():
     return render_template('deckadding.html')
 
 @app.route('/deck/<int:deck_id>/delete')
+@login_required
 def deck_delete(deck_id):
     deck = Deck.query.filter_by(id=deck_id).first()
     print(deck)
@@ -105,6 +133,7 @@ def deck_delete(deck_id):
 
 
 @app.route('/deck/<int:deck_id>/card/add',methods=['GET','POST'])
+@login_required
 def card_add(deck_id):
     deck = Deck.query.filter_by(id=deck_id).first()
     if request.method =='POST':
@@ -112,18 +141,77 @@ def card_add(deck_id):
         back = request.form['back']
         if  deck:
             card = Card(front=front, back=back, deck_id=deck_id)
+            card.review=0
             db.session.add(card)
             db.session.commit()
             return redirect('/')
     return render_template('addcard.html',deck_id=deck_id)
 
 
+@app.route('/deck/<int:deck_id>/test')
+@login_required
+def test(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    UTC_datetime = datetime.now()
+    # UTC_datetime_timestamp = float(UTC_datetime.strftime("%s"))
+    # local_datetime_converted = datetime.fromtimestamp(UTC_datetime_timestamp)
+    deck.review_time = datetime.utcnow()
+
+    db.session.add(deck)
+    db.session.commit()
+    cardlen = len(Card.query.filter_by(deck_id=deck.id).all())
+    score = int(round((deck.deck_score/cardlen)*100))
+    if deck:
+        cards =Card.query.filter_by(deck_id=deck.id, review=0).all()
+        cardnum = len(cards)
+        if cardnum == 0:
+            return render_template('test.html',deck=deck,cardnum=cardnum, cardlen=cardlen,score=score)
+        
+        i=random.randrange(cardnum)
+        card=cards[i]
+        cardId= card.id
+        
+        return render_template('test.html',deck=deck, cardnum=cardnum,card=card, cardlen=cardlen,score=score)
 
 
+@app.route('/deck/<int:deck_id>/learn/<int:cardId>/notknow')
+@login_required
+def notknow(deck_id, cardId):
+    card = Card.query.filter_by(id=cardId).first()
+    card.review = 1
+    deck = Deck.query.filter_by(id=deck_id).first()
+    db.session.add(card)
+    db.session.commit()
+    return redirect(url_for('.test', deck_id=deck_id))
 
 
+@app.route('/deck/<int:deck_id>/learn/<int:cardId>/know')
+@login_required
+def know(deck_id, cardId):
+    card = Card.query.filter_by(id=cardId).first()
+    
+    card.review = 1
+    u = User.query.get(current_user.id)
+    deck = Deck.query.filter_by(id=deck_id).first()
+    cards = Card.query.filter_by(deck_id=deck.id).all()
+    cardnum = len(cards)
+    deck.deck_score+=1
+    db.session.add(deck)
+    db.session.add(card)
+    db.session.commit()
+    return redirect(url_for('.test', deck_id=deck_id))
 
-
+@app.route('/deck/<int:deck_id>/update')
+@login_required
+def deck_update(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    cards = Card.query.filter_by(deck_id=deck.id).all()
+    print(deck)
+    if  deck:
+        db.session.delete(deck)
+        db.session.commit()
+        return redirect('/')
+    return redirect('/')
 
 
 
