@@ -38,4 +38,13 @@ function initialize() {
 function func() {
   document.getElementById("front").style.visibility = "hidden";
   document.getElementById("back").style.visibility = "visible";
+  document.getElementById("btn").style.visibility = "visible";
 }
+function textupdate() {
+  document.getElementById("frontupdate").value = front;
+  document.getElementById("backupdate").value = back;
+}
+window.onload = textupdate;
+window.onload = (event) => {
+  console.log("page is fully loaded");
+};

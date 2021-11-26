@@ -15,20 +15,20 @@
 <body>
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand">Flash(k)ard</a>
+          <a href="/" class="navbar-brand">Flash(k)ard</a>
           <div class="d-flex">
-            {% if current_user.is_authenticated %}
-            <a class="nav-link" href="/logout">Logout</a>
-            {% else %}
-            <a class="nav-link" href="/login">Login</a>
+                {% if current_user.is_authenticated %}
+                <a class="nav-link" href="/logout">Logout</a>
+                {% else %}
+                <a class="nav-link" href="/login">Login</a>
             {% endif %}
           </div>
         </div>
-      </nav>
+    </nav>
     
       <div class="text-center">
-        <h1>Deck Name: {{deck.title}}</h1>
-        <h1>Score:{{score}}%</h1>
+            <h1>Deck Name: {{deck.title}}</h1>
+            <h1>Score:{{score}}%</h1>
         
         
 
@@ -38,27 +38,33 @@
             <a href="/" class="btn btn-success">Return to Dashboard</a>
       </div>
             {% else %}
-            <div class="container d-flex justify-content-center align-items-center" >
-        <div class="card shadow p-3 mb-5 bg-white rounded my-5  " style="width: 30rem; height:20rem" onclick="func()">
-            <div class="card-text text-center">
-                <div id="front" class="align-text-bottom" >
-                    <h4>{{card.front}}</h4>
+        <div class="container d-flex justify-content-center align-items-center" >
+            <div class="card shadow p-3 mb-5 bg-white rounded my-5  text-center" style="width: 30rem; height:20rem" onclick="func()">
+                <div class="card-body">
+                    <div class="card-text text-center">
+                        <div id="front">
+                            <h4>{{card.front}}</h4>
                 
-                </div>
-                <div id="back" style="visibility: hidden;">
-                    <h4>{{card.back}}</h4>
-                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                        <a href="{{url_for('.notknow',deck_id = deck.id,cardId=card.id)}}" class="btn btn-danger">Don't Know</a>
-                        <a href="{{url_for('.know',deck_id = deck.id,cardId=card.id)}}" class="btn btn-success">I know it</a>
-                      </div>
-                </div>
+                        </div>
+                        <div id="back" style="visibility: hidden;">
+                            <h4>{{card.back}}</h4>
+                        </div>
+                    </div>
+                </div>  
+                            <div class="card-footer" id="btn" style="visibility: hidden;">
+                                <div class="btn-group card-footer" role="group" aria-label="Basic mixed styles example">
+                                    <a href="{{url_for('.notknow',deck_id = deck.id,cardId=card.id)}}" class="btn btn-danger">Don't Know</a>
+                                    <a href="{{url_for('.know',deck_id = deck.id,cardId=card.id)}}" class="btn btn-success">I know it</a>
+                                </div>
+                            </div>
             </div>
+        </div>
             {% endif %}
             
 
             
         </div>
-    </div>
+
 
     
 </body>

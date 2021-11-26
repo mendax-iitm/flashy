@@ -30,6 +30,9 @@ class User(db.Model, UserMixin):
 
     def get_id(self):
         return self.id
+    
+    def get_username(self):
+        return self.username
 
 
 class Deck(db.Model):

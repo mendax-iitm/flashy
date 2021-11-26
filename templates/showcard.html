@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+    {% block content %}
+    
+        <div class="text-center">
+            
+            <p class="h3">Deck Name: {{deck.title}}</p>
+            <a href="/deck/{{deck.id}}/edit">Edit Deck Title</a>
+        </div>
+        <div class="container">
+            <div class="row">
+                {% for card in cards %}
+                <div class="col-3">
+                    
+                    <div class="card shadow p-3 mb-5 bg-white rounded my-5 text-center " style="width: 18rem; min-height: 10rem;">
+                        <div class="card-body">
+                            <p class="card-text">
+                                    {{card.front}}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <div class="col">
+                                <a href="/card/{{card['id']}}/edit">Edit </a>
+                                <a class="mx-2" href="/card/{{card['id']}}/delete">Delete</a>
+                            </div>
+                        </div>
+                            
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        <!-- <div class="collection">
+            <div class="row h4">
+                <div class="col">Deck Title</div>
+                <div class="col">No. of Cards</div>
+                <div class="col">Score</div>
+                <div class="col">Last Reviewed</div>
+                <div class="col">Action</div>
+            </div>
+        {% for i in range(decks|length) %}
+        <div class="row mx-auto">
+            <div class="col">
+                <a href="/deck/{{decks[i]['id']}}/update">{{decks[i]['title']}}</a>
+                
+            </div>
+            <div class="col">{{cardnum[i]}}</div>
+            <div class="col">
+                 {% if reviews[i] == True %}
+                 <a class="btn btn-warning" href="/deck/{{decks[i]['id']}}/test">Review </a>
+                 {% else %}
+                {{scores[i]}}%
+                {% endif %}
+                </div>
+            <div class="col">
+                
+                {{review_time_ist[i]}}
+
+            </div>
+            <div class="col">
+                <a href="/deck/{{decks[i]['id']}}/card/add">Add card </a>|
+                <a href="/deck/{{decks[i]['id']}}/test">Test </a>|
+                <a href="/deck/{{decks[i]['id']}}/delete">Delete</a>
+            </div>
+        </div>
+            
+        </div>
+        
+        {% endfor %}
+        </div>
+        
+        <div class="newcard text-center my-5">
+            <a href="/deck/add">Add new deck</a>
+        </div> -->
+    
+{% endblock %}    
+
+
+

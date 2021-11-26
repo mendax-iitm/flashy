@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+    {% block content %}
+    
+        
+    
+    <div class="container-fluid d-flex justify-content-center align-items-center" >
+        <div class="col-lg-5">
+            <form action="/card/{{card.id}}/edit" method="post" >
+                <div class="form-group">
+                    <div class="text-center">
+                        <label for="front">Front</label>
+                    </div>
+                    
+                    <textarea  name="front" id="frontupdate" rows="10" class="form-control" required>{{card["front"]}}</textarea>
+                </div>
+                <div class="text-center">
+                    <label for="back">Back</label>
+                </div>
+                
+                <textarea  name="back" id="backupdate" rows="10" class="form-control" required>{{card["back"]}}</textarea>
+            </div>
+                
+                <div class="form-group mx-5">
+                    <button ontype="submit" class="btn btn-primary mb-2">Update Card</button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+{% endblock %}  

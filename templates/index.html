@@ -7,15 +7,15 @@
             <h3>Total Decks: {{decks|length}}</h3>
         </div>
         <div class="collection">
-            <div class="row h4">
+            <div class="row h4 text-center">
                 <div class="col">Deck Title</div>
                 <div class="col">No. of Cards</div>
                 <div class="col">Score</div>
                 <div class="col">Last Reviewed</div>
-                <div class="col">Action</div>
+                <div class="col-lg-3 text-center">Action</div>
             </div>
         {% for i in range(decks|length) %}
-        <div class="row mx-auto">
+        <div class="row text-center">
             <div class="col">
                 <a href="/deck/{{decks[i]['id']}}/update">{{decks[i]['title']}}</a>
                 
@@ -33,10 +33,11 @@
                 {{review_time_ist[i]}}
 
             </div>
-            <div class="col">
+            <div class="col-lg-3 text-center">
                 <a href="/deck/{{decks[i]['id']}}/card/add">Add card </a>|
                 <a href="/deck/{{decks[i]['id']}}/test">Test </a>|
-                <a href="/deck/{{decks[i]['id']}}/delete">Delete</a>
+                <a href="/deck/{{decks[i]['id']}}/delete">Delete</a>|
+                <a href="/deck/{{decks[i]['id']}}/reset">Reset</a>
             </div>
         </div>
             

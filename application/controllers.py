@@ -87,9 +87,11 @@ def index():
         # print((timedelta(hours=1)+deck.review_time)<time_now)
         if deck.review_time==None or (timedelta(hours=1)+deck.review_time<time_now) :
             deck.deck_score=0
+            db.session.add(deck)
             score=deck.deck_score
             for card in cards:
                 card.review=0
+            db.session.add(card)
             reviews.append(True)
             
         else:
@@ -101,7 +103,7 @@ def index():
             review_time_ist.append(utc_to_local(deck.review_time))
         scores.append(score)
         cardnum.append(len(cards))
-    
+    db.session.commit()
     return render_template('index.html', decks=decks, cardnum=cardnum, scores=scores, reviews=reviews, review_time_ist=review_time_ist)
 
 @app.route('/deck/add', methods=['GET', 'POST'] )
@@ -207,14 +209,51 @@ def deck_update(deck_id):
     deck = Deck.query.filter_by(id=deck_id).first()
     cards = Card.query.filter_by(deck_id=deck.id).all()
     print(deck)
-    if  deck:
-        db.session.delete(deck)
+    return render_template('showcard.html', deck=deck, cards=cards)
+
+
+@app.route('/deck/<int:deck_id>/edit', methods = ['GET','POST'])
+@login_required
+def deck_edit(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    cards = Card.query.filter_by(deck_id=deck.id).all()
+    if request.method =='POST':
+        title = request.form['title']
+        deck.title = title
+        db.session.add(deck)
         db.session.commit()
-        return redirect('/')
-    return redirect('/')
+        return redirect(url_for('.deck_update', deck_id=deck_id))
+    return render_template('deckupdate.html', deck=deck)
+    # if  deck:
+    #     db.session.delete(deck)
+    #     db.session.commit()
+    #     return redirect('/')
+    # return redirect('/')
+@app.route('/card/<int:card_id>/delete')
+@login_required
+def card_delete(card_id):
+    card = Card.query.filter_by(id=card_id).first()
+    if card:
+        deck_id = card.deck_id
+        db.session.delete(card)
+        db.session.commit()
+        return redirect(url_for('.deck_update', deck_id=deck_id)) 
+    return render_template('404.html')
 
-
-
+@app.route('/card/<int:card_id>/edit', methods = ['GET','POST'])
+@login_required
+def card_edit(card_id):
+    card = Card.query.filter_by(id=card_id).first()
+    deck_id = card.deck_id
+    if request.method =='POST':
+        front = request.form['front']
+        back = request.form['back']
+        card.front = front
+        card.back=back
+        db.session.add(card)
+        db.session.commit()
+        return redirect(url_for('.deck_update', deck_id=deck_id))
+    return render_template('cardupdate.html', card=card)
 
 
 # @app.route("/articles_by/<user_name>", methods=["GET", "POST"])
