@@ -54,7 +54,7 @@ class Card(db.Model):
     back = db.Column(db.String)
     deck_id = db.Column(db.Integer, db.ForeignKey(
         'deck.id'), primary_key=True, nullable=False)
-    review = db.Column(db.Integer)
+    review = db.Column(db.Integer, default=0)
     
 
 

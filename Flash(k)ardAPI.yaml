@@ -1,0 +1,731 @@
+openapi: 3.0.0
+info:
+  title: Flash(k)ard API Documentation
+  description: >
+    <div>This RESTful API, database models has been created using Flask-RESTful  and     flask-SQLAlchemy. 
+  
+    </div>
+
+    <h3> User Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>username</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td>String</td>
+        <td>Unique, Not Null</td>
+      </tr>      
+       <tr>
+        <td>active</td>
+        <td>Boolean</td>
+        <td>Defualt 0</td>
+      </tr> 
+               
+    </tbody>
+    </table>
+
+    <h3> Deck Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>title</td>
+        <td>String</td>
+        <td>Not Null</td>
+      </tr>
+      <tr>
+        <td>review_time</td>
+        <td>String</td>
+        <td></td>
+      </tr>      
+      <tr>
+        <td>deck_score</td>
+        <td>Integer</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>user_id</td>
+        <td>Integer</td>
+        <td>Foreign Key(user.id), Not Null</td>
+      </tr> 
+    </tbody>
+    </table>
+
+
+    <h3> Card Table Schema </h3> 
+    <table>
+      <thead>
+        <th>Column Name</th>
+        <th>Column Type</th>
+        <th>Constraints</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>id</td>
+        <td>Integer</td>
+        <td>Primary Key, Auto Increment</td>
+      </tr>
+      <tr>
+        <td>front</td>
+        <td>String</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>back</td>
+        <td>String</td>
+        <td></td>
+         <tr>
+        <td>deck_id</td>
+        <td>Integer</td>
+        <td>Foreign Key(deck.id), Not Null</td>
+      </tr> 
+         <tr>
+        <td>review</td>
+        <td>Boolean</td>
+        <td>Defualt 0</td>
+      </tr> 
+    </tbody>
+    </table>
+    <h3> ER Diagram </h3>
+    <img src="https://mermaid.ink/img/eyJjb2RlIjoiZXJEaWFncmFtXG4gICAgICAgICAgXG4gICAgICAgIFVTRVIgICB8fC0tb3sgIERFQ0sgOiBcIm9uZSB0byBtYW55XCJcbiAgICAgICAgICBVU0VSe1xuICAgICAgICAgICAgICBpbnRlZ2VyIGlkXG4gICAgICAgICAgICAgIHN0cmluZyB1c2VybmFtZVxuICAgICAgICAgICAgICBzdHJpbmcgcGFzc3dvcmRcbiAgICAgICAgICAgICAgaW50ZWdlciBhY3RpdmVcbiAgICAgICAgICB9XG4gICAgICAgICAgREVDSyAgICB8fC0tb3sgQ0FSRCA6IFwib25lIGRlY2sgY2FuIGhhdmUgbWFueSBjYXJkc1wiXG4gICAgICAgICAgREVDS3tcbiAgICAgICAgICAgICAgaW50ZWdlciBpZFxuICAgICAgICAgICAgICBzdHJpbmcgdGl0bGVcbiAgICAgICAgICAgICAgc3RyaW5nIHJldmlld190aW1lXG4gICAgICAgICAgICAgIGludGVnZXIgZGVja19zY29yZVxuICAgICAgICAgICAgICBpbnRlZ2VyIHVzZXJfaWRcbiAgICAgICAgICB9XG4gICAgICAgICAgQ0FSRHtcbiAgICAgICAgICAgICAgaW50ZWdlciBpZFxuICAgICAgICAgICAgICBzdHJpbmcgZnJvbnRcbiAgICAgICAgICAgICAgc3RyaW5nIGJhY2tcbiAgICAgICAgICAgICAgaW50ZWdlciBkZWNrX2lkXG4gICAgICAgICAgICAgIGludGVnZXIgcmV2aWV3XG4gICAgICAgICAgfSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"/>
+    <h3> Error Codes </h3> 
+    <table>
+      <thead>
+        <th>Resource</th>
+        <th>Error Code</th>
+        <th>Message</th>
+      </thead>
+      <tbody>
+      <tr>
+        <td>USER</td>
+        <td>USER001</td>
+        <td>Username is required and should be string.</td>
+      </tr>
+      <tr>
+        <td>USER</td>
+        <td>USER002</td>
+        <td>Password is required and should be string.</td>
+      </tr>
+      <tr>
+        <td>DECK</td>
+        <td>DECK001</td>
+        <td>No deck is created for the user</td>
+      </tr>
+      <tr>
+        <td>DECK</td>
+        <td>DECK002</td>
+        <td>Title should be non-empty String </td>
+      </tr>
+      <tr>
+        <td>CARD</td>
+        <td>CARD001</td>
+        <td>No card is created for the deck </td>
+      </tr>
+      <tr>
+        <td>CARD</td>
+        <td>CARD002</td>
+        <td>Front is required </td>
+      </tr>
+      <tr>
+        <td>CARD</td>
+        <td>CARD003</td>
+        <td>Back of the card is required</td>
+      </tr>
+      <tr>
+        <td>CARD</td>
+        <td>CARD004</td>
+        <td>No card created for the user</td>
+      </tr>  
+      
+    </tbody>
+    </table>
+
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:8080/
+paths:
+  /api/user/{user_id}:
+    description: End point to read, update and delete  user resource
+    get:
+      description: Operation to Read user resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 201
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                title: user object
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: abhishek
+                  password:
+                    type: string
+                    example: 23d4$1d8#7dhj0du@
+                  active:
+                    type: integer
+                    example: 0
+        '500':
+          description: Internal Server Error
+        '404':
+          description: User not found
+
+    put:
+      description: Operation to update the user resource.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 201
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: abhishek
+                password:
+                  type: string
+                  example: abcde
+                
+                
+      responses:
+        '200':
+          description: Successfuly updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: abhishek
+                  password:
+                    type: string
+                    example: 23d4$1d8#7dhj0du@
+                  active:
+                    type: integer
+                    example: 0
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+    delete:
+      description: Operation to delete the user 
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 201
+      responses:
+        '200':
+          description: Successfully Deleted
+        '404':
+          description: User not found
+        '500':
+          description: Intenal Server Error
+
+  /api/user:
+    description: End point to create user resource
+    post:
+      description: Operation to create the user resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: abhinitrpr
+                password:
+                  type: string
+                  example: abcde
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  username:
+                    type: string
+                    example: abhinitrpr
+                  password:
+                    type: string
+                    example: 23d4$1d8#7dhj0du@
+                  active:
+                    type: integer
+                    example: 0
+        '409':
+          description: user already exist
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  /api/deck/user/{user_id}:
+    description: Url to read, update and delete the deck resource.
+    get:
+      description: Operation to read deck resource
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: English
+                    deck_score:
+                      type: integer
+                      example: 50
+                    review_time:
+                      type: string
+                      example: '26:11:2021 15:11:13'
+        '400':
+          description: No decks created for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error
+  
+    post:
+      description: Operation to create the deck resource
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: App Dev
+
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: deck object
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 8
+                  title:
+                    type: string
+                    example: App Dev
+                  username:
+                    type: string
+                    example: abhishek
+                  
+        '409':
+          description: Deck already exist for the user
+        '500':
+          description: Internal Server Error
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  /api/deck/{deck_id}:
+    put:
+      description: Operation to update the deck resource
+      parameters:
+        - in: path
+          name: deck_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: App development
+                
+      responses:
+        '200':
+          description: Successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deck_id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: App Development
+        '409':
+          description: Deck already exist for the user         
+        '404':
+          description: Deck not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+    delete:
+      description: Operation to delete the deck 
+      parameters:
+        - in: path
+          name: deck_id
+          required: true
+          schema:
+            type: integer
+            example: 101
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Deck not found
+
+  /api/card/deck/{deck_id}:
+    description: Url to read, update and delete the card resource.
+    get:
+      description: Operation to read card resource
+      parameters:
+        - in: path
+          name: deck_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    front:
+                      type: string
+                      example: Capital of India
+                    back:
+                      type: string
+                      example: New Delhi
+                    review:
+                      type: integer
+                      example: 0
+        '400':
+          description: No cards created for the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '404':
+          description: Deck not found
+        '500':
+          description: Internal Server Error
+  
+    post:
+      description: Operation to create the card resource
+      parameters:
+        - in: path
+          name: deck_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                front:
+                  type: string
+                  example: Capital of Srilanka
+                back:
+                  type: string
+                  example: Colombo
+
+      responses:
+        '201':
+          description: Successfully Created
+          content:
+            application/json:
+              schema:
+                title: deck object
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 8
+                  front:
+                    type: string
+                    example: Capital of Srilanka
+                  back:
+                    type: string
+                    example: Colombo
+                  review:
+                    type: integer
+                    example: 0
+                  
+        '409':
+          description: Card already exist for the deck
+        '500':
+          description: Internal Server Error
+        '400':
+          description: BAD REQUEST
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+  /api/card/{card_id}:
+    put:
+      description: Operation to update the card resource
+      parameters:
+        - in: path
+          name: card_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                front:
+                  type: string
+                  example: Capital of Bangladesh
+                back:
+                  type: string
+                  example: Dhaka
+                
+      responses:
+        '200':
+          description: Successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 8
+                  front:
+                    type: string
+                    example: Capital of Srilanka
+                  back:
+                    type: string
+                    example: Colombo
+                  review:
+                    type: integer
+                    example: 0
+        '409':
+          description: Card already exist for the deck         
+        '404':
+          description: Card not found
+        '500':
+          description: Internal Server Error
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+    delete:
+      description: Operation to delete the card resource
+      parameters:
+        - in: path
+          name: card_id
+          required: true
+          schema:
+            type: integer
+            example: 101
+      responses:
+        '200':
+          description: Successfully Deleted
+        '500':
+          description: Internal Server Error
+        '404':
+          description: Card not found
+  /api/cards/user/{user_id}:
+    description: Url to read the card resource for the particular user
+    get:
+      description: Operation to read card resource
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Request Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    front:
+                      type: string
+                      example: Capital of India
+                    back:
+                      type: string
+                      example: New Delhi
+                    review:
+                      type: integer
+                      example: 0
+        '400':
+          description: BAD Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error_code:
+                    type: string
+                  error_message:
+                    type: string
+        '404':
+          description: User not found
+        '500':
+          description: Internal Server Error

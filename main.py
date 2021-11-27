@@ -52,9 +52,11 @@ def page_not_found(e):
 
 from application.UserAPI import UserAPI
 from application.DeckAPI import DeckAPI
+from application.CardAPI import CardAPI, CardsAPI
 api.add_resource(UserAPI, "/api/user", "/api/user/<int:user_id>")
 api.add_resource(DeckAPI, "/api/deck/<int:deck_id>", "/api/deck/user/<int:user_id>")
-
+api.add_resource(CardAPI, "/api/card/<int:card_id>", "/api/card/deck/<int:deck_id>")
+api.add_resource(CardsAPI,"/api/cards/user/<int:user_id>")
 if __name__ == "__main__":
     # Run the Flask app
     app.run(host="0.0.0.0", port=8080)
