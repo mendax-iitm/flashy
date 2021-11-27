@@ -16,4 +16,10 @@ class NotFoundError(HTTPException):
     def __init__(self, status_code):
         self.response = make_response('', status_code)
 
-
+class InvalidUserError(HTTPException):
+    def __init__(self, status_code):
+        self.response = make_response('', status_code)
+class AlreadyExistedError(HTTPException):
+    def __init__(self, status_code):
+        self.response = make_response(
+            '', status_code)

@@ -5,10 +5,11 @@ from flask_security import UserMixin
 
 
 
+
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String)
+    username = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     deck = db.relationship(
@@ -35,10 +36,11 @@ class User(db.Model, UserMixin):
         return self.username
 
 
+
 class Deck(db.Model):
     __tablename__ = "deck"
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    title = db.Column(db.String)
+    title = db.Column(db.String, nullable=False)
     review_time = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     deck_score = db.Column(db.Integer, default=0)

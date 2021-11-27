@@ -28,7 +28,7 @@ def register():
         return redirect("/")
     form = RegistrationForm()
     
-    if request.method=='POST':
+    if form.validate_on_submit():
         
         user = User(username=form.username.data)
         user.password=bcrypt.generate_password_hash(form.password.data)
@@ -47,7 +47,7 @@ def login():
         return redirect("/")
     form = LoginForm()
     
-    if request.method=='POST':
+    if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not bcrypt.check_password_hash(user.password,form.password.data):
             flash('Invalid username or password')
@@ -130,8 +130,12 @@ def deck():
 @login_required
 def deck_delete(deck_id):
     deck = Deck.query.filter_by(id=deck_id).first()
-    print(deck)
+    
     if  deck:
+        cards = Card.query.filter_by(deck_id=deck.id).all()
+        if len(cards)>0:
+            for card in cards:
+                db.session.delete(card)
         db.session.delete(deck)
         db.session.commit()
         return redirect('/')
@@ -259,6 +263,21 @@ def card_edit(card_id):
         return redirect(url_for('.deck_update', deck_id=deck_id))
     return render_template('cardupdate.html', card=card)
 
+@app.route('/deck/<int:deck_id>/reset')
+@login_required
+def deck_reset(deck_id):
+    deck = Deck.query.filter_by(id=deck_id).first()
+    deck.deck_score=0
+    
+    cards = Card.query.filter_by(deck_id=deck.id).all()
+    if cards:
+        for card in cards:
+            card.review=0
+            db.session.add(card)
+    db.session.add(deck)
+    db.session.commit()
+    return redirect('/')
+    
 
 # @app.route("/articles_by/<user_name>", methods=["GET", "POST"])
 # @login_required

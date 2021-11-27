@@ -1,4 +1,4 @@
-from application.api import UserAPI
+
 from flask_login import LoginManager
 import os
 from flask import Flask
@@ -12,7 +12,7 @@ from flask_security import (
     SQLAlchemySessionUserDatastore,
     SQLAlchemyUserDatastore,
 )
-from application.models import User
+
 
 
 
@@ -31,7 +31,7 @@ app.app_context().push()
 login_manager.login_view='login'
 
 
-
+from application.models import User
 # Import all the controllers so they are loaded
 from application.controllers import *
 
@@ -48,7 +48,10 @@ def page_not_found(e):
     return render_template("403.html"), 403
 
 
-api.add_resource(UserAPI, "/api/user", "/api/user/<string:username>")
+
+
+from application.api import UserAPI
+api.add_resource(UserAPI, "/api/user", "/api/user/<int:user_id>")
 
 if __name__ == "__main__":
     # Run the Flask app
