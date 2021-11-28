@@ -3,7 +3,7 @@ info:
   title: Flash(k)ard API Documentation
   description: >
     <div>This RESTful API, database models has been created using Flask-RESTful  and     flask-SQLAlchemy. 
-  
+
     </div>
 
     <h3> User Table Schema </h3> 
@@ -165,7 +165,7 @@ info:
 
   version: 1.0.0
 servers:
-  - url: http://127.0.0.1:8080/
+  - url: http://127.0.0.1:5000/
 paths:
   /api/user/{user_id}:
     description: End point to read, update and delete  user resource
@@ -179,7 +179,7 @@ paths:
             type: integer
             example: 201
       responses:
-        '200':
+        "200":
           description: Request Successful
           content:
             application/json:
@@ -199,9 +199,9 @@ paths:
                   active:
                     type: integer
                     example: 0
-        '500':
+        "500":
           description: Internal Server Error
-        '404':
+        "404":
           description: User not found
 
     put:
@@ -225,10 +225,9 @@ paths:
                 password:
                   type: string
                   example: abcde
-                
-                
+
       responses:
-        '200':
+        "200":
           description: Successfuly updated
           content:
             application/json:
@@ -247,11 +246,11 @@ paths:
                   active:
                     type: integer
                     example: 0
-        '404':
+        "404":
           description: User not found
-        '500':
+        "500":
           description: Internal Server Error
-        '400':
+        "400":
           description: Bad request
           content:
             application/json:
@@ -263,7 +262,7 @@ paths:
                   error_message:
                     type: string
     delete:
-      description: Operation to delete the user 
+      description: Operation to delete the user
       parameters:
         - in: path
           name: user_id
@@ -272,11 +271,11 @@ paths:
             type: integer
             example: 201
       responses:
-        '200':
+        "200":
           description: Successfully Deleted
-        '404':
+        "404":
           description: User not found
-        '500':
+        "500":
           description: Intenal Server Error
 
   /api/user:
@@ -296,7 +295,7 @@ paths:
                   type: string
                   example: abcde
       responses:
-        '201':
+        "201":
           description: Successfully Created
           content:
             application/json:
@@ -315,11 +314,11 @@ paths:
                   active:
                     type: integer
                     example: 0
-        '409':
+        "409":
           description: user already exist
-        '500':
+        "500":
           description: Internal Server Error
-        '400':
+        "400":
           description: Bad request
           content:
             application/json:
@@ -342,7 +341,7 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
+        "200":
           description: Request Successful
           content:
             application/json:
@@ -361,8 +360,8 @@ paths:
                       example: 50
                     review_time:
                       type: string
-                      example: '26:11:2021 15:11:13'
-        '400':
+                      example: "26:11:2021 15:11:13"
+        "400":
           description: No decks created for the user
           content:
             application/json:
@@ -373,11 +372,11 @@ paths:
                     type: string
                   error_message:
                     type: string
-        '404':
+        "404":
           description: User not found
-        '500':
+        "500":
           description: Internal Server Error
-  
+
     post:
       description: Operation to create the deck resource
       parameters:
@@ -398,7 +397,7 @@ paths:
                   example: App Dev
 
       responses:
-        '201':
+        "201":
           description: Successfully Created
           content:
             application/json:
@@ -415,12 +414,12 @@ paths:
                   username:
                     type: string
                     example: abhishek
-                  
-        '409':
+
+        "409":
           description: Deck already exist for the user
-        '500':
+        "500":
           description: Internal Server Error
-        '400':
+        "400":
           description: BAD REQUEST
           content:
             application/json:
@@ -450,9 +449,9 @@ paths:
                 title:
                   type: string
                   example: App development
-                
+
       responses:
-        '200':
+        "200":
           description: Successfully updated
           content:
             application/json:
@@ -465,13 +464,13 @@ paths:
                   title:
                     type: string
                     example: App Development
-        '409':
-          description: Deck already exist for the user         
-        '404':
+        "409":
+          description: Deck already exist for the user
+        "404":
           description: Deck not found
-        '500':
+        "500":
           description: Internal Server Error
-        '400':
+        "400":
           description: Bad request
           content:
             application/json:
@@ -483,7 +482,7 @@ paths:
                   error_message:
                     type: string
     delete:
-      description: Operation to delete the deck 
+      description: Operation to delete the deck
       parameters:
         - in: path
           name: deck_id
@@ -492,11 +491,11 @@ paths:
             type: integer
             example: 101
       responses:
-        '200':
+        "200":
           description: Successfully Deleted
-        '500':
+        "500":
           description: Internal Server Error
-        '404':
+        "404":
           description: Deck not found
 
   /api/card/deck/{deck_id}:
@@ -511,7 +510,7 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
+        "200":
           description: Request Successful
           content:
             application/json:
@@ -531,7 +530,7 @@ paths:
                     review:
                       type: integer
                       example: 0
-        '400':
+        "400":
           description: No cards created for the user
           content:
             application/json:
@@ -542,11 +541,11 @@ paths:
                     type: string
                   error_message:
                     type: string
-        '404':
+        "404":
           description: Deck not found
-        '500':
+        "500":
           description: Internal Server Error
-  
+
     post:
       description: Operation to create the card resource
       parameters:
@@ -570,7 +569,7 @@ paths:
                   example: Colombo
 
       responses:
-        '201':
+        "201":
           description: Successfully Created
           content:
             application/json:
@@ -590,12 +589,12 @@ paths:
                   review:
                     type: integer
                     example: 0
-                  
-        '409':
+
+        "409":
           description: Card already exist for the deck
-        '500':
+        "500":
           description: Internal Server Error
-        '400':
+        "400":
           description: BAD REQUEST
           content:
             application/json:
@@ -628,9 +627,9 @@ paths:
                 back:
                   type: string
                   example: Dhaka
-                
+
       responses:
-        '200':
+        "200":
           description: Successfully updated
           content:
             application/json:
@@ -649,13 +648,13 @@ paths:
                   review:
                     type: integer
                     example: 0
-        '409':
-          description: Card already exist for the deck         
-        '404':
+        "409":
+          description: Card already exist for the deck
+        "404":
           description: Card not found
-        '500':
+        "500":
           description: Internal Server Error
-        '400':
+        "400":
           description: Bad request
           content:
             application/json:
@@ -676,11 +675,11 @@ paths:
             type: integer
             example: 101
       responses:
-        '200':
+        "200":
           description: Successfully Deleted
-        '500':
+        "500":
           description: Internal Server Error
-        '404':
+        "404":
           description: Card not found
   /api/cards/user/{user_id}:
     description: Url to read the card resource for the particular user
@@ -694,7 +693,7 @@ paths:
             type: integer
             example: 1
       responses:
-        '200':
+        "200":
           description: Request Successful
           content:
             application/json:
@@ -714,7 +713,7 @@ paths:
                     review:
                       type: integer
                       example: 0
-        '400':
+        "400":
           description: BAD Request
           content:
             application/json:
@@ -725,7 +724,7 @@ paths:
                     type: string
                   error_message:
                     type: string
-        '404':
+        "404":
           description: User not found
-        '500':
+        "500":
           description: Internal Server Error

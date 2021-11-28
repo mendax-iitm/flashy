@@ -59,4 +59,4 @@ api.add_resource(CardAPI, "/api/card/<int:card_id>", "/api/card/deck/<int:deck_i
 api.add_resource(CardsAPI,"/api/cards/user/<int:user_id>")
 if __name__ == "__main__":
     # Run the Flask app
-    app.run(host="0.0.0.0", port=8080)
+    app.run()
