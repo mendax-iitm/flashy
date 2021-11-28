@@ -243,6 +243,12 @@ def card_delete(card_id):
     card = Card.query.filter_by(id=card_id).first()
     if card:
         deck_id = card.deck_id
+        deck = Deck.query.filter_by(id=deck_id).first()
+        deck.deck_score=0
+        cards = Card.query.filter_by(deck_id=deck.id).all()
+        for el in cards:
+            el.review=0
+        db.session.add(deck)
         db.session.delete(card)
         db.session.commit()
         return redirect(url_for('.deck_update', deck_id=deck_id)) 
