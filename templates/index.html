@@ -3,10 +3,12 @@
     {% block content %}
     <div class="container-fluid">
         <div class="text-center">
+            
             <h1>Deck Management</h1>
             <h3>Total Decks: {{decks|length}}</h3>
         </div>
         <div class="collection">
+            {% if decks|length >0 %}
             <div class="row h4 text-center">
                 <div class="col">Deck Title</div>
                 <div class="col">No. of Cards</div>
@@ -14,6 +16,7 @@
                 <div class="col">Last Reviewed</div>
                 <div class="col text-center">Action</div>
             </div>
+            {% endif %}
         {% for i in range(decks|length) %}
         <div class="row text-center">
             <div class="col">
@@ -47,7 +50,7 @@
         </div>
         
         <div class="newcard text-center my-5">
-            <a href="/deck/add">Add new deck</a>
+            <a class="btn btn-info text-white" href="/deck/add">Add new deck</a>
         </div>
     </div>
 {% endblock %}    
