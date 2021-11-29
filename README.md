@@ -26,7 +26,6 @@ On the terminal change the directory to current folder
 ## Test
 
 - To test the app you can enter dummy user_id: abhishek and password:abcde
-  <<<<<<< HEAD
 
 ## Demo:
 
