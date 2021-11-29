@@ -26,7 +26,10 @@ On the terminal change the directory to current folder
 ## Test
 
 - To test the app you can enter dummy user_id: abhishek and password:abcde
+<<<<<<< HEAD
 
 ## Demo:
 
 ![How to Use](https://drive.google.com/file/d/1HbaLiGcVqFxVOB6Dgdxc8ogad1zmfVpq/view?usp=sharing)
+=======
+>>>>>>> 867a3d3ad4530fb009fd29005c2120a2b3873159
